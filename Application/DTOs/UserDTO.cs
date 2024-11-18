@@ -18,6 +18,7 @@ namespace API.Application.DTOs
         [Required]
         [MinLength(8)]
         [MaxLength(30)]
+        [PasswordValidationAttribute(ErrorMessage = "A senha precisa atender à todos os requisitos")]
         public string? Password { get; set; }
 
         [Required]
