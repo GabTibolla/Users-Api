@@ -32,6 +32,10 @@ public class UserService
         return await _user.GetUsers();
     }
 
+    public async Task<UserEntity?> GetUserByEmail(String email) {
+        return await _user.GetUserByEmail(email);
+    }
+
     public async Task<UserEntity?> UpdateUser(String email, UserDTO userDTO)
     {
         // Busca o usuário com base no email e na senha informada

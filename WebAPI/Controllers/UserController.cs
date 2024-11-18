@@ -1,7 +1,10 @@
 ﻿using API.Application.DTOs;
 using API.Application.Services;
+using API.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 
 namespace API.WebAPI.Controllers;
 
@@ -10,6 +13,7 @@ namespace API.WebAPI.Controllers;
 public class UserController : ControllerBase
 {
     private readonly UserService _userService;
+
     public UserController(UserService userService)
     {
         _userService = userService;
@@ -50,6 +54,30 @@ public class UserController : ControllerBase
                 return NotFound();
             }
             return Ok(users);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Ocorreu um erro inesperado", detail = ex.Message });
+        }
+    }
+
+    [HttpGet("byEmail")]
+    public async Task<IActionResult> GetUserByEmail(string email)
+    {
+        try
+        {
+            var user = await _userService.GetUserByEmail(email);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
         catch (ArgumentException ex)
         {

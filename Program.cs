@@ -9,13 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddStackExchangeRedisCache(options => { 
+    options.Configuration = builder.Configuration["ConnectionStrings:Redis"];
+    options.InstanceName = "API_Cache";
+});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
 });
 
 builder.Services.AddScoped<IUser, User>();
+builder.Services.AddScoped<CacheService>();
 builder.Services.AddScoped<UserService>();
+
 
 
 builder.Services.AddControllers();
