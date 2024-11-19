@@ -12,7 +12,7 @@ namespace API.Application.DTOs
 
         [Required]
         [MaxLength(140)]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Este e-mail já está cadastrado")]
         public string? Email { get; set; }
 
         [Required]

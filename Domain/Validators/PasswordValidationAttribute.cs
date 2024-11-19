@@ -4,24 +4,22 @@ namespace API.Domain.Validators
 {
     public class PasswordValidationAttribute : ValidationAttribute
     {
-        public override bool IsValid(object value)
+        public override bool IsValid(object? value)
         {
             if (value == null)
                 return false;
 
             var password = value.ToString();
 
-            // Validação customizada: Deve conter pelo menos 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial
-            if (password.Length >= 8 && password.Length <= 30 &&
-                password.Contains("ABCDEFGHIJKLMNOPQRSTUVWXYZ") &&
-                password.Contains("abcdefghijklmnopqrstuvwxyz") &&
-                password.Contains("0123456789") &&
-                password.Contains("!@#$%^&*()_+"))
-            {
-                return true;
-            }
+            // Verifica os critérios de validação
+            bool hasUpperCase = password!.Any(char.IsUpper); // Pelo menos 1 letra maiúscula
+            bool hasLowerCase = password!.Any(char.IsLower); // Pelo menos 1 letra minúscula
+            bool hasDigit = password!.Any(char.IsDigit);     // Pelo menos 1 número
+            bool hasSpecialChar = password!.Any(c => "!@#$%^&*()_+-".Contains(c)); // Pelo menos 1 caractere especial
+            bool isCorrectLength = password!.Length >= 8 && password!.Length <= 30;
 
-            return false;
+            // Retorna verdadeiro apenas se todos os critérios forem atendidos
+            return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && isCorrectLength;
         }
     }
 }

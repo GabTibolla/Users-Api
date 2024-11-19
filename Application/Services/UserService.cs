@@ -7,10 +7,12 @@ namespace API.Application.Services;
 public class UserService
 {
     private readonly IUser _user;
+    private readonly PasswordService _passwordService;
 
-    public UserService(IUser IUser)
+    public UserService(IUser IUser, PasswordService passwordService)
     {
         _user = IUser;
+        _passwordService = passwordService;
     }
 
     public async Task<UserEntity> CreateUserAsync(UserDTO userDTO)
@@ -20,7 +22,7 @@ public class UserService
             Id = Guid.NewGuid(),
             Name = userDTO.Name,
             Email = userDTO.Email,
-            Password = userDTO.Password,
+            Password = _passwordService.HashPassword(userDTO.Password!),
             Permissions = userDTO.Permissions
         };
 

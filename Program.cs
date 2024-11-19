@@ -22,6 +22,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUser, User>();
 builder.Services.AddScoped<CacheService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<PasswordService>();
 
 
 

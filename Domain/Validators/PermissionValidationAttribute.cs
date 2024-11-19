@@ -6,7 +6,7 @@ namespace API.Domain.Validators;
 
 public class PermissionValidationAttribute : ValidationAttribute
 {
-    public override bool IsValid(object value)
+    public override bool IsValid(object? value)
     {
         if (value == null)
             return false;
